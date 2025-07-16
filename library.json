@@ -1,0 +1,49 @@
+{
+  "name": "RgbLed",
+  "version": "1.0.0",
+  "description": "Control RGB LEDs with PWM, transitions (fade), and visual effects (blink, pulse, rainbow, glitch). Supports gamma correction and brightness scaling.",
+  "keywords": [
+    "rgb",
+    "led",
+    "pwm",
+    "fade",
+    "blink",
+    "glitch",
+    "pulse",
+    "transition",
+    "rainbow",
+    "esp32",
+    "arduino"
+  ],
+  "authors": [
+    {
+      "name": "BugProg",
+      "email": "",
+      "maintainer": true
+    }
+  ],
+  "license": "Gplv3",
+  "homepage": "https://github.com/BugProg/RGBControl",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BugProg/RGBControl.git"
+  },
+  "frameworks": [
+    "arduino"
+  ],
+  "platforms": [
+    "espressif32",
+    "atmelavr",
+    "ststm32"
+  ],
+  "export": {
+    "include": [
+      "src",
+      "include",
+      "examples",
+      "library.json",
+      "README.md",
+      "LICENSE"
+    ]
+  }
+}

@@ -1,0 +1,68 @@
+#######################################
+# Classes
+#######################################
+RgbLed		KEYWORD1
+Rgb			KEYWORD1
+
+#######################################
+# Functions / Methods
+#######################################
+setColor		KEYWORD2
+setTransition	KEYWORD2
+setEffect		KEYWORD2
+setLuminosity	KEYWORD2
+setBlinkOnDuration	KEYWORD2
+setBlinkOffDuration	KEYWORD2
+setPulsePeriod	KEYWORD2
+enableGammaCorrection	KEYWORD2
+disableGammaCorrection	KEYWORD2
+getBlinkOffDuration	KEYWORD2
+getTransition		KEYWORD2
+getBlinkOnDuration	KEYWORD2
+getPulsePeriod		KEYWORD2
+getLuminosity		KEYWORD2
+getColorToString	KEYWORD2
+getRgb				KEYWORD2
+isOn				KEYWORD2
+getGammaEnabled		KEYWORD2
+update				KEYWORD2
+on					KEYWORD2
+off					KEYWORD2
+
+#######################################
+# Enums and Constants
+#######################################
+Color			KEYWORD1
+Transition		KEYWORD1
+Effect			KEYWORD1
+
+#######################################
+# Enum Values - Color
+#######################################
+Black		LITERAL1
+White		LITERAL1
+Red			LITERAL1
+Green		LITERAL1
+Blue		LITERAL1
+Yellow		LITERAL1
+Cyan		LITERAL1
+Magenta		LITERAL1
+Orange		LITERAL1
+Purple		LITERAL1
+Pink		LITERAL1
+Custom		LITERAL1
+
+#######################################
+# Enum Values - Transition
+#######################################
+None		LITERAL1
+Fade		LITERAL1
+
+#######################################
+# Enum Values - Effect
+#######################################
+Solid		LITERAL1
+Blink		LITERAL1
+Pulse		LITERAL1
+Rainbow		LITERAL1
+Glitch		LITERAL1
