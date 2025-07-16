@@ -124,6 +124,26 @@ Rgb RgbLed::computeEffectColor(Rgb rgb) {
             rgb.b *= brightness;
         }
         break;
+        case Effect::Glitch: {
+            if (millis() - _effectMemoryTime > 100) {
+                _effectMemoryTime = millis();
+
+                if (random(0, 100) < 70) {
+                    // 70% chance: show random glitch
+                    rgb.r = random(256);
+                    rgb.g = random(256);
+                    rgb.b = random(256);
+                } else {
+                    // 30% chance: show target color
+                    rgb = _rgb;
+                }
+                _glitch_rgb = rgb;
+            } else {
+                rgb = _glitch_rgb;
+            }
+
+        }
+        break;
         default:
             break;
     }

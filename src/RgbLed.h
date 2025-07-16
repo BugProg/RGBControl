@@ -29,8 +29,7 @@ enum class Effect : uint8_t {
     None,
     Blink,
     Pulse,
-    Strobe,
-    Rainbow,    // Hue shifting
+    Rainbow,
     Glitch
 };
 
@@ -94,6 +93,7 @@ private:
 
     Rgb _rgb{};
     Rgb _last_rgb{};
+    Rgb _glitch_rgb{};
 
     // Runtime state
     Color _color{Color::Red};
