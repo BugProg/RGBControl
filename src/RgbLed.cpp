@@ -101,22 +101,18 @@ Rgb RgbLed::computeTransitionColor() {
 
 Rgb RgbLed::computeEffectColor(Rgb rgb) {
     switch (_selectedEffect) {
-        case Effect::Blink:
-            if (_blinkState && millis() - _effectMemoryTime < _blinkOnTimeMs) {
+        case Effect::Blink: {
+            const unsigned long duration = _blinkState ? _blinkOnTimeMs : _blinkOffTimeMs;
+
+            if (millis() - _effectMemoryTime < duration) {
+                if (!_blinkState)
+                    rgb.r = rgb.g = rgb.b = 0;
                 break;
             }
-            if (!_blinkState && millis() - _effectMemoryTime < _blinkOffTimeMs) {
-                rgb.r *= 0;
-                rgb.g *= 0;
-                rgb.b *= 0;
-                break;
-            }
-            if ((_blinkState && millis() - _effectMemoryTime > _blinkOnTimeMs) ||
-                (!_blinkState && millis() - _effectMemoryTime > _blinkOffTimeMs)) {
-                _blinkState = !_blinkState;
-                _effectMemoryTime = millis();
-            }
-            break;
+            _blinkState = !_blinkState;
+            _effectMemoryTime = millis();
+        }
+        break;
         case Effect::Pulse: {
             const unsigned long now = millis();
             const float phase = static_cast<float>(now % static_cast<unsigned long>(_pulsePeriod)) / _pulsePeriod;
