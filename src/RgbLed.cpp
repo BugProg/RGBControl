@@ -61,13 +61,12 @@ void RgbLed::update() {
 
     const Rgb rgb = computeTransitionColor();
 
-    analogWrite(_pinRed, computeColorValue(rgb.r));
-    analogWrite(_pinGreen, computeColorValue(rgb.g));
-    analogWrite(_pinBlue, computeColorValue(rgb.b));
+    analogWrite(_pinRed, applyPwmInversion((rgb.r) * _isOn));
+    analogWrite(_pinGreen, applyPwmInversion((rgb.g) * _isOn));
+    analogWrite(_pinBlue, applyPwmInversion((rgb.b) * _isOn));
 }
 
 Rgb RgbLed::computeTransitionColor() {
-
     const unsigned long elapsed = millis() - _transitionTime;
     constexpr float duration = 500.0f;
     const float t = min(static_cast<float>(elapsed) / duration, 1.0f);
@@ -104,7 +103,7 @@ void RgbLed::on() {
     _isOn = true;
 }
 
-uint8_t RgbLed::computeColorValue(uint8_t color) const {
+uint8_t RgbLed::applyPwmInversion(uint8_t color) const {
     return _pwmInverted ? 255 - color : color;
 }
 

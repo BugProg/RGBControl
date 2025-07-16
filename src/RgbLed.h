@@ -56,7 +56,7 @@ public:
     bool isOn() const { return _isOn; }
 
 private:
-    uint8_t computeColorValue(uint8_t color) const;
+    uint8_t applyPwmInversion(uint8_t color) const;
 
     // Pins are immutable after construction
     const uint8_t _pinRed, _pinGreen, _pinBlue;
