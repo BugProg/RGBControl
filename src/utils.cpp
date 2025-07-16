@@ -28,3 +28,7 @@ uint8_t linearInterpolate(const uint8_t a, const uint8_t b, float t) {
     t = constrain(t, 0.0f, 1.0f);
     return static_cast<uint8_t>(static_cast<float>(a) + static_cast<float>(b - a) * t);
 }
+
+uint8_t applyGammaCorrection(const uint8_t value, const float gamma) {
+    return static_cast<uint8_t>(pow(value / 255.0, gamma) * 255 + 0.5);
+}

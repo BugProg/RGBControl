@@ -7,10 +7,10 @@
 void RgbLed::setColor(const uint8_t r, const uint8_t g, const uint8_t b, const Transition transition) {
     _color = Color::Custom;
     setTransition(transition);
-    _last_rgb = _rgb;
-    _rgb.r = r;
-    _rgb.g = g;
-    _rgb.b = b;
+    _last_rgb = _selectedRgb;
+    _selectedRgb.r = r;
+    _selectedRgb.g = g;
+    _selectedRgb.b = b;
 
     update();
 }
@@ -63,7 +63,12 @@ void RgbLed::update() {
     rgb = computeEffectColor(rgb);
 
     auto scale = [&](const uint8_t value) -> uint8_t {
-        return static_cast<uint8_t>(std::lround(static_cast<float>(value) * static_cast<float>(_isOn) * _luminosity));
+        const auto color = static_cast<uint8_t>(std::lround(
+            static_cast<float>(value) * static_cast<float>(_isOn) * _luminosity));
+        if (_gammaEnabled) {
+            return applyGammaCorrection(color);
+        }
+        return color;
     };
 
     analogWrite(_pinRed, applyPwmInversion(scale(rgb.r)));
@@ -73,7 +78,7 @@ void RgbLed::update() {
 
 Rgb RgbLed::computeTransitionColor() {
     if (_selectedTransition == Transition::None)
-        return _rgb;
+        return _selectedRgb;
 
     const unsigned long elapsed = millis() - _transitionTime;
     constexpr float duration = 500.0f;
@@ -83,16 +88,16 @@ Rgb RgbLed::computeTransitionColor() {
 
     switch (_selectedTransition) {
         case Transition::Fade:
-            rgb.r = linearInterpolate(_last_rgb.r, _rgb.r, t);
-            rgb.g = linearInterpolate(_last_rgb.g, _rgb.g, t);
-            rgb.b = linearInterpolate(_last_rgb.b, _rgb.b, t);
+            rgb.r = linearInterpolate(_last_rgb.r, _selectedRgb.r, t);
+            rgb.g = linearInterpolate(_last_rgb.g, _selectedRgb.g, t);
+            rgb.b = linearInterpolate(_last_rgb.b, _selectedRgb.b, t);
             if (t >= 1.0f) {
                 _selectedTransition = Transition::None;
             }
             break;
         case Transition::None:
         default:
-            rgb = _rgb;
+            rgb = _selectedRgb;
             break;
     }
 
@@ -135,7 +140,7 @@ Rgb RgbLed::computeEffectColor(Rgb rgb) {
                     rgb.b = random(256);
                 } else {
                     // 30% chance: show target color
-                    rgb = _rgb;
+                    rgb = _selectedRgb;
                 }
                 _glitch_rgb = rgb;
             } else {
@@ -152,6 +157,14 @@ Rgb RgbLed::computeEffectColor(Rgb rgb) {
     }
 
     return rgb;
+}
+
+void RgbLed::enableGammaCorrection() {
+    _gammaEnabled = true;
+}
+
+void RgbLed::disableGammaCorrection() {
+    _gammaEnabled = false;
 }
 
 void RgbLed::setTransition(const Transition transition) {
