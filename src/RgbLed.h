@@ -1,6 +1,5 @@
 #pragma once
 #include <Arduino.h>
-#include <cstdint>
 
 enum class Color : uint8_t {
     Black,
@@ -43,6 +42,8 @@ public:
 
     void setTransition(Transition transition);
 
+    void setLuminosity(float luminosity);
+
     void update();
 
     void on();
@@ -52,6 +53,7 @@ public:
     // Getters (const‑correct)
     Color getColorToString() const { return _color; }
     Transition getTransition() const { return _transition; }
+    float getLuminosity() const { return _luminosity; }
     Rgb getRgb() const { return _rgb; }
     bool isOn() const { return _isOn; }
 
@@ -61,6 +63,7 @@ private:
     // Pins are immutable after construction
     const uint8_t _pinRed, _pinGreen, _pinBlue;
     unsigned long lastUpdate = 0;
+    float _luminosity = 1.f;
 
     Rgb _rgb{};
     Rgb _last_rgb{};
@@ -72,6 +75,8 @@ private:
     Transition _transition;
 
     unsigned long _transitionTime = 0;
+
     Rgb computeTransitionColor();
+
     uint8_t linearInterpolate(uint8_t a, uint8_t b, float t) const;
 };

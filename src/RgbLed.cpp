@@ -3,7 +3,6 @@
 //
 
 #include "RgbLed.h"
-#include <Arduino.h>
 
 void RgbLed::setColor(const uint8_t r, const uint8_t g, const uint8_t b, const Transition transition) {
     _color = Color::Custom;
@@ -61,9 +60,13 @@ void RgbLed::update() {
 
     const Rgb rgb = computeTransitionColor();
 
-    analogWrite(_pinRed, applyPwmInversion((rgb.r) * _isOn));
-    analogWrite(_pinGreen, applyPwmInversion((rgb.g) * _isOn));
-    analogWrite(_pinBlue, applyPwmInversion((rgb.b) * _isOn));
+    auto scale = [&](const uint8_t value) -> uint8_t {
+        return static_cast<uint8_t>(std::lround(static_cast<float>(value) * static_cast<float>(_isOn) * _luminosity));
+    };
+
+    analogWrite(_pinRed, applyPwmInversion(scale(rgb.r)));
+    analogWrite(_pinGreen, applyPwmInversion(scale(rgb.g)));
+    analogWrite(_pinBlue, applyPwmInversion(scale(rgb.b)));
 }
 
 Rgb RgbLed::computeTransitionColor() {
@@ -95,6 +98,11 @@ void RgbLed::setTransition(const Transition transition) {
     _transitionTime = millis();
 }
 
+void RgbLed::setLuminosity(float luminosity) {
+    luminosity = constrain(luminosity, 0.0f, 1.0f);
+    _luminosity = luminosity;
+}
+
 void RgbLed::off() {
     _isOn = false;
 }
@@ -109,5 +117,5 @@ uint8_t RgbLed::applyPwmInversion(uint8_t color) const {
 
 uint8_t RgbLed::linearInterpolate(uint8_t a, uint8_t b, float t) const {
     t = constrain(t, 0.0f, 1.0f);
-    return static_cast<uint8_t>(a + (b - a) * t + 0.5f);
+    return static_cast<uint8_t>(static_cast<float>(a + (b - a)) * t);
 }
