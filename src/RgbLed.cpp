@@ -117,6 +117,17 @@ Rgb RgbLed::computeEffectColor(Rgb rgb) {
                 _effectMemoryTime = millis();
             }
             break;
+        case Effect::Pulse: {
+            const unsigned long now = millis();
+            const float phase = static_cast<float>(now % static_cast<unsigned long>(_pulsePeriod)) / _pulsePeriod;
+            const float brightness = (sin(phase * 2.0f * static_cast<float>(M_PI)) + 1.0f) / 2.0f;
+
+            Serial.println(sin(millis() * PI));
+            rgb.r *= brightness;
+            rgb.g *= brightness;
+            rgb.b *= brightness;
+        }
+        break;
         default:
             break;
     }
@@ -144,6 +155,10 @@ void RgbLed::setBlinkOnDuration(const uint8_t duration) {
 
 void RgbLed::setBlinkOffDuration(const uint8_t duration) {
     _blinkOffTimeMs = duration;
+}
+
+void RgbLed::setPulsePeriod(const float pulsePeriod) {
+    _pulsePeriod = pulsePeriod;
 }
 
 void RgbLed::off() {

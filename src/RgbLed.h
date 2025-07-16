@@ -58,6 +58,8 @@ public:
     void setBlinkOnDuration(uint8_t duration);
     void setBlinkOffDuration(uint8_t duration);
 
+    void setPulsePeriod(float pulsePeriod);
+
     void update();
 
     void on();
@@ -65,11 +67,12 @@ public:
     void off();
 
     // Getters (const‑correct)
-    Color getColorToString() const { return _color; }
-    Transition getTransition() const { return _selectedTransition; }
-    float getLuminosity() const { return _luminosity; }
-    uint8_t getBlinkOnDuration() const { return _blinkOnTimeMs; }
     uint8_t getBlinkOffDuration() const { return _blinkOffTimeMs; }
+    Transition getTransition() const { return _selectedTransition; }
+    uint8_t getBlinkOnDuration() const { return _blinkOnTimeMs; }
+    float getPulsePeriod() const { return _pulsePeriod; }
+    float getLuminosity() const { return _luminosity; }
+    Color getColorToString() const { return _color; }
     Rgb getRgb() const { return _rgb; }
     bool isOn() const { return _isOn; }
 
@@ -80,9 +83,14 @@ private:
     const uint8_t _pinRed, _pinGreen, _pinBlue;
     unsigned long lastUpdate = 0;
     float _luminosity = 1.f;
+
+    // Blink settings
     uint16_t _blinkOnTimeMs = 1000;
     uint16_t _blinkOffTimeMs = 1000;
     bool _blinkState = true;
+
+    // Pulse settings
+    float _pulsePeriod = 2000.f;
 
     Rgb _rgb{};
     Rgb _last_rgb{};
