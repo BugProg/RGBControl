@@ -141,9 +141,12 @@ Rgb RgbLed::computeEffectColor(Rgb rgb) {
             } else {
                 rgb = _glitch_rgb;
             }
-
         }
         break;
+        case Effect::Rainbow: {
+            const float hue = fmod((millis() - _effectMemoryTime) * 0.1, 360.0f);
+            rgb = hsvToRgb(hue, 1.0f, 1.0f);
+        }
         default:
             break;
     }
@@ -157,6 +160,9 @@ void RgbLed::setTransition(const Transition transition) {
 }
 
 void RgbLed::setEffect(const Effect effect) {
+    if (_selectedEffect != effect) {
+        _effectMemoryTime = millis();
+    }
     _selectedEffect = effect;
 }
 
@@ -187,9 +193,4 @@ void RgbLed::on() {
 
 uint8_t RgbLed::applyPwmInversion(uint8_t color) const {
     return _pwmInverted ? 255 - color : color;
-}
-
-uint8_t RgbLed::linearInterpolate(const uint8_t a, const uint8_t b, float t) const {
-    t = constrain(t, 0.0f, 1.0f);
-    return static_cast<uint8_t>(static_cast<float>(a) + static_cast<float>(b - a) * t);
 }

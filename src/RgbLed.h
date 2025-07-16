@@ -1,5 +1,6 @@
 #pragma once
 #include <Arduino.h>
+#include "utils.h"
 
 enum class Color : uint8_t {
     Black,
@@ -14,10 +15,6 @@ enum class Color : uint8_t {
     Purple,
     Pink,
     Custom
-};
-
-struct Rgb {
-    uint8_t r, g, b;
 };
 
 enum class Transition : uint8_t {
@@ -107,6 +104,4 @@ private:
 
     Rgb computeTransitionColor();
     Rgb computeEffectColor(Rgb rgb);
-
-    uint8_t linearInterpolate(uint8_t a, uint8_t b, float t) const;
 };
